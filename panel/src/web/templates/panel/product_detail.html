@@ -1,0 +1,21 @@
+{% extends "panel/base.html" %}
+{% block title %}Producto{% endblock %}
+{% block content %}
+  <h1 style="margin-top:0">{{ p.sku }} - {{ p.name }}</h1>
+  <div class="grid grid-2">
+    <div class="card">
+      <div class="muted">Estado</div>
+      <div>Stock: <strong>{{ p.stock_current }}</strong></div>
+      <div>Mínimo: <strong>{{ p.stock_minimum }}</strong></div>
+      <div>Categoría: <strong>{{ p.category }}</strong></div>
+      <div>Activo: <strong>{{ p.is_active }}</strong></div>
+    </div>
+    <div class="card">
+      <h3 style="margin:0 0 10px 0;">Acciones rápidas</h3>
+      {% include "panel/partials/_quick_actions.html" %}
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:12px"
+       hx-get="{% url 'panel:kardex_partial' p.id %}" hx-trigger="load" hx-swap="outerHTML"></div>
+{% endblock %}

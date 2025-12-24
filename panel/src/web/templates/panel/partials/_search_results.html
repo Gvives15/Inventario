@@ -1,0 +1,14 @@
+{% if q %}
+  <ul>
+    {% for it in items %}
+      <li>
+        <a href="{% url 'panel:product_detail' it.id %}">{{ it.sku }} - {{ it.name }}</a>
+        <span class="muted">Stock: {{ it.stock_current }}</span>
+      </li>
+    {% empty %}
+      <li class="muted">Sin resultados</li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <span class="muted">Escribí para buscar</span>
+{% endif %}

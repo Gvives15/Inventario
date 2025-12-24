@@ -1,0 +1,31 @@
+<h3 style="margin:0 0 10px 0;">Alertas</h3>
+<div class="grid grid-2">
+  <div class="card">
+    <div class="muted">Bajo stock</div>
+    <ul>
+      {% for p in d.low_stock %}
+        <li>
+          <a href="{% url 'panel:product_detail' p.id %}">{{ p.sku }} - {{ p.name }}</a>
+          <span class="bad">({{ p.stock_current }} / min {{ p.stock_minimum }})</span>
+        </li>
+      {% empty %}
+        <li class="ok">Sin alertas</li>
+      {% endfor %}
+    </ul>
+  </div>
+  <div class="card">
+    <div class="muted">Ajustes recientes</div>
+    <ul>
+      {% for m in d.recent_adjustments %}
+        <li>
+          {{ m.sku }} - {{ m.name }}
+          <strong>{{ m.delta }}</strong>
+          ({{ m.reason }})
+          por <em>{{ m.created_by }}</em>
+        </li>
+      {% empty %}
+        <li class="muted">Sin ajustes</li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>

@@ -1,0 +1,17 @@
+{% extends "panel/base.html" %}
+{% block title %}Login{% endblock %}
+{% block content %}
+  <div class="card" style="max-width:420px;margin:40px auto;">
+    <h2>Ingresar</h2>
+    <p class="muted">Panel V1: logueado = acceso total.</p>
+    {% if error %}<p class="bad"><strong>{{ error }}</strong></p>{% endif %}
+    <form method="post" action="{% url 'panel:login_submit' %}">
+      {% csrf_token %}
+      <div class="row" style="flex-direction:column;align-items:stretch;gap:10px">
+        <input name="username" placeholder="Usuario" required />
+        <input name="password" type="password" placeholder="Contraseña" required />
+        <button type="submit">Entrar</button>
+      </div>
+    </form>
+  </div>
+{% endblock %}

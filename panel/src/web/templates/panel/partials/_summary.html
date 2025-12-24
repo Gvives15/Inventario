@@ -1,0 +1,18 @@
+<h3 style="margin:0 0 10px 0;">Resumen</h3>
+<div class="grid grid-3">
+  <div class="card">
+    <div class="muted">Productos</div>
+    <div><strong>{{ d.total_products }}</strong> total / <strong>{{ d.active_products }}</strong> activos</div>
+  </div>
+  <div class="card">
+    <div class="muted">Bajo mínimo</div>
+    <div class="{% if d.low_stock_count > 0 %}bad{% else %}ok{% endif %}">
+      <strong>{{ d.low_stock_count }}</strong>
+    </div>
+  </div>
+  <div class="card">
+    <div class="muted">Hoy</div>
+    <div><strong>{{ d.movements_today }}</strong> movimientos</div>
+  </div>
+  </div>
+<div class="muted" style="margin-top:10px;">Ajustes 7d: <strong>{{ d.adjustments_7d }}</strong></div>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{% block title %}Panel{% endblock %}</title>
+  <script src="https://unpkg.com/htmx.org@1.9.12"></script>
+  <style>
+    body{font-family:system-ui,Segoe UI,Arial;margin:0;padding:0;background:#f6f7f9;color:#222}
+    header{background:#111;color:#fff;padding:10px 16px}
+    main{padding:16px;max-width:1100px;margin:0 auto}
+    .grid{display:grid;gap:12px}
+    .grid-2{grid-template-columns:1fr 1fr}
+    .grid-3{grid-template-columns:repeat(3,1fr)}
+    .card{background:#fff;border:1px solid #ddd;border-radius:8px;padding:12px}
+    .muted{color:#666;font-size:.95em}
+    .ok{color:#0a7}
+    .bad{color:#d22}
+    .row{display:flex;gap:8px}
+    input,button{padding:8px;border:1px solid #bbb;border-radius:6px}
+    button{background:#111;color:#fff;border-color:#111;cursor:pointer}
+    a{color:#111}
+  </style>
+  {% block head %}{% endblock %}
+  {% csrf_token %}
+</head>
+<body>
+  <header>
+    <div class="row" style="justify-content:space-between;align-items:center">
+      <div><strong>Inventario V1</strong></div>
+      <form method="post" action="{% url 'panel:logout_submit' %}">
+        {% csrf_token %}
+        <button type="submit">Salir</button>
+      </form>
+    </div>
+  </header>
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>

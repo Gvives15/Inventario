@@ -1,0 +1,29 @@
+<h3 style="margin:0 0 10px 0;">Top productos (7d)</h3>
+<div class="grid grid-2">
+  <div class="card">
+    <div class="muted">Más salidas</div>
+    <ul>
+      {% for x in d.top_exits %}
+        <li>
+          <a href="{% url 'panel:product_detail' x.product_id %}">{{ x.sku }} - {{ x.name }}</a>
+          <strong>{{ x.units }}</strong>
+        </li>
+      {% empty %}
+        <li class="muted">Sin datos</li>
+      {% endfor %}
+    </ul>
+  </div>
+  <div class="card">
+    <div class="muted">Más ajustes</div>
+    <ul>
+      {% for a in d.top_adjusts %}
+        <li>
+          <a href="{% url 'panel:product_detail' a.product_id %}">{{ a.sku }} - {{ a.name }}</a>
+          <strong>{{ a.count }}</strong>
+        </li>
+      {% empty %}
+        <li class="muted">Sin datos</li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
