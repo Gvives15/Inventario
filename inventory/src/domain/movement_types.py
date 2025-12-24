@@ -1,4 +1,5 @@
 class MovementTypes:
     ENTRY = "entry"
     EXIT = "exit"
-    ADJUST = "adjust"
+    ADJUST_COUNT = "adjust_count"
+    ADJUST_DELTA = "adjust_delta"

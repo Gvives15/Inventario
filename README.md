@@ -155,6 +155,31 @@ python manage.py runserver
 - `/panel/actions/stock/exit/`
 - `/panel/actions/stock/adjust-to-count/`
 
+### Quick Actions por SKU
+
+- `POST /panel/actions/stock/entry-by-sku/`
+- `POST /panel/actions/stock/exit-by-sku/`
+- `POST /panel/actions/stock/adjust-to-count-by-sku/`
+
+Respuesta: partial HTMX `_toast.html` con OK/ERROR.
+
+### Movimientos globales
+
+- `GET /panel/movements/`
+- `GET /panel/movements/partials/list/?range=today|7d&sku=SKU123&type=entry|exit|adjust_count|adjust_delta`
+
+### Integridad (Reglas)
+
+- `normalize_sku(raw)` aplicado en todos los puntos de entrada (API, panel, imports).
+- `require_reason(reason)` obligatorio en `entry`, `exit`, `adjust-*`.
+- `movement_type` con choices reales: `entry`, `exit`, `adjust_count`, `adjust_delta`.
+
+### Errores y Logging
+
+- Templates `403.html`, `404.html`, `500.html` con estilo del panel.
+- `LOGGING` en `config/settings.py` con canal `inventory.movements`.
+- Los commands emiten logs con: `sku`, `type`, `delta`, `stock`, `reason`, `user_id`.
+
 ---
 
 ## Uso — API (Django Ninja + JWT)

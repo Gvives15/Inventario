@@ -1,0 +1,43 @@
+{% if items %}
+<table class="table table-zebra">
+  <thead>
+    <tr>
+      <th>Código</th>
+      <th>Producto</th>
+      <th class="right">Stock</th>
+      <th class="right">Mínimo</th>
+      <th>Vence</th>
+      <th>Últ. mov.</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for r in items %}
+    <tr>
+      <td>{{ r.sku }}</td>
+      <td>
+        <a hx-get="{% url 'panel:product_sheet_partial' r.id %}" hx-target="#product-sheet" hx-swap="innerHTML">{{ r.name }}</a>
+        {% if r.badge == 'sin' %}<span class="badge" style="background:#fee;color:#900;border:1px solid #fbb">Sin stock</span>
+        {% elif r.badge == 'bajo' %}<span class="badge" style="background:#fffae6;color:#7a5a00;border:1px solid #f0d48a">Bajo</span>
+        {% else %}<span class="badge" style="background:#e8fff3;color:#0a7;border:1px solid #bdf2d5">OK</span>{% endif %}
+      </td>
+      <td class="right">{{ r.stock_current }}</td>
+      <td class="right">{{ r.stock_minimum }}</td>
+      <td class="meta">—</td>
+      <td class="meta">{% if r.last_movement %}{{ r.last_movement.created_at|date:"Y-m-d H:i" }}{% else %}-{% endif %}</td>
+      <td>
+        {% if can_write %}
+          <button class="btn" hx-get="{% url 'panel:movement_drawer_partial' %}?type=entry&product_id={{ r.id }}" hx-target="#movement-drawer" hx-swap="innerHTML">Entrada</button>
+          <button class="btn" hx-get="{% url 'panel:movement_drawer_partial' %}?type=exit&product_id={{ r.id }}" hx-target="#movement-drawer" hx-swap="innerHTML">Salida</button>
+          <button class="btn" hx-get="{% url 'panel:movement_drawer_partial' %}?type=adjust&product_id={{ r.id }}" hx-target="#movement-drawer" hx-swap="innerHTML">Ajuste</button>
+        {% else %}
+          <a class="btn" hx-get="{% url 'panel:product_sheet_partial' r.id %}" hx-target="#product-sheet" hx-swap="innerHTML">Ver</a>
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+  <div class="card">No hay resultados. <a hx-get="{% url 'panel:products_table_partial' %}" hx-target="#products-table" hx-swap="innerHTML">Limpiar filtros</a></div>
+{% endif %}

@@ -1,17 +1,18 @@
 {% extends "panel/base.html" %}
 {% block title %}Producto{% endblock %}
 {% block content %}
-  <h1 style="margin-top:0">{{ p.sku }} - {{ p.name }}</h1>
+  <div class="h1" style="margin-top:0">{{ p.name }}</div>
+  <div class="muted">SKU {{ p.sku }}</div>
   <div class="grid grid-2">
     <div class="card">
       <div class="muted">Estado</div>
-      <div>Stock: <strong>{{ p.stock_current }}</strong></div>
+      <div class="h1">Stock: {{ p.stock_current }}</div>
       <div>Mínimo: <strong>{{ p.stock_minimum }}</strong></div>
       <div>Categoría: <strong>{{ p.category }}</strong></div>
       <div>Activo: <strong>{{ p.is_active }}</strong></div>
     </div>
     <div class="card">
-      <h3 style="margin:0 0 10px 0;">Acciones rápidas</h3>
+      <h3 class="h2" style="margin:0 0 10px 0;">Acciones rápidas</h3>
       {% include "panel/partials/_quick_actions.html" %}
     </div>
   </div>

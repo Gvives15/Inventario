@@ -1,6 +1,10 @@
 from inventory.src.infrastructure.orm.models import StockMovement, Product
+from inventory.src.domain.movement_types import MovementTypes
 
 def create(product: Product, delta: int, movement_type: str, reason: str, resulting_stock: int, user=None) -> StockMovement:
+    allowed = {MovementTypes.ENTRY, MovementTypes.EXIT, MovementTypes.ADJUST_COUNT, MovementTypes.ADJUST_DELTA}
+    if movement_type not in allowed:
+        raise ValueError("invalid movement_type")
     return StockMovement.objects.create(
         product=product,
         delta=delta,

@@ -1,14 +1,18 @@
 from django.db.models import Q, F
 from django.db import transaction
 from inventory.src.infrastructure.orm.models import Product
+from inventory.src.domain.rules import normalize_sku
 
 def get_for_update(product_id: int) -> Product:
     return Product.objects.select_for_update().get(id=product_id)
 
 def create(name: str, sku: str, category: str, stock_minimum: int) -> Product:
-    return Product.objects.create(name=name, sku=sku, category=category, stock_minimum=stock_minimum)
+    s = normalize_sku(sku)
+    return Product.objects.create(name=name, sku=s, category=category, stock_minimum=stock_minimum)
 
 def update_partial(product: Product, **fields) -> Product:
+    if "sku" in fields and fields["sku"] is not None:
+        fields["sku"] = normalize_sku(fields["sku"])
     for k, v in fields.items():
         setattr(product, k, v)
     product.save(update_fields=list(fields.keys()))

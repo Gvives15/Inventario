@@ -1,0 +1,19 @@
+<div class="card" style="max-width:640px">
+  <div class="row" style="justify-content:space-between;align-items:center">
+    <div>
+      <div class="h2" style="margin:0">{{ p.name }}</div>
+      <div class="meta">SKU {{ p.sku }}</div>
+    </div>
+    <div class="row">
+      <button class="btn" hx-get="{% url 'panel:movement_drawer_partial' %}?type=entry&product_id={{ product_id }}" hx-target="#movement-drawer" hx-swap="innerHTML">Entrada</button>
+      <button class="btn" hx-get="{% url 'panel:movement_drawer_partial' %}?type=exit&product_id={{ product_id }}" hx-target="#movement-drawer" hx-swap="innerHTML">Salida</button>
+      <button class="btn" hx-get="{% url 'panel:movement_drawer_partial' %}?type=adjust_count&product_id={{ product_id }}" hx-target="#movement-drawer" hx-swap="innerHTML">Ajuste</button>
+    </div>
+  </div>
+  <div class="row" style="margin-top:12px;gap:12px">
+    <div class="badge" style="background:#e8fff3;color:#0a7;border:1px solid #bdf2d5">Stock {{ p.stock_current }}</div>
+    <div class="badge" style="background:#eef2f7;color:#374151;border:1px solid var(--border)">Mínimo {{ p.stock_minimum }}</div>
+    <div class="badge" style="background:#f9fafb;color:#374151;border:1px solid var(--border)">Últ. mov: {% if p.updated_at %}{{ p.updated_at|date:"Y-m-d H:i" }}{% else %}-{% endif %}</div>
+  </div>
+  <div class="card" style="margin-top:16px" hx-get="{% url 'panel:kardex_partial' product_id %}" hx-trigger="load" hx-swap="outerHTML"></div>
+</div>

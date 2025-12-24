@@ -1,0 +1,23 @@
+{% extends "panel/base.html" %}
+{% block title %}Movimientos{% endblock %}
+{% block content %}
+<h2 class="h2">Movimientos</h2>
+<form class="row" hx-get="{% url 'panel:movements_list_partial' %}" hx-target="#movements-list" hx-swap="innerHTML">
+  <select class="select" name="range">
+    <option value="today">Hoy</option>
+    <option value="7d">Últimos 7 días</option>
+    <option value="30d">Últimos 30 días</option>
+  </select>
+  <input class="input" name="sku" placeholder="Producto" />
+  <select class="select" name="type">
+    <option value="">Todos</option>
+    <option value="entry">Entrada</option>
+    <option value="exit">Salida</option>
+    <option value="adjust_count">Ajuste a conteo</option>
+    <option value="adjust_delta">Ajuste delta</option>
+  </select>
+  <button type="submit" class="btn btn-secondary">Aplicar</button>
+  {% csrf_token %}
+  </form>
+<div id="movements-list" class="card" hx-get="{% url 'panel:movements_list_partial' %}" hx-trigger="load" hx-swap="innerHTML"></div>
+{% endblock %}

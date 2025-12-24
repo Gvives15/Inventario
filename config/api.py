@@ -12,3 +12,7 @@ def inventory_error_handler(request, exc: InventoryError):
 
 api.add_router("/auth", auth_router)
 api.add_router("/inventory", inventory_router, auth=JWTBearer())
+
+@api.get("/health")
+def health():
+    return {"status": "ok"}

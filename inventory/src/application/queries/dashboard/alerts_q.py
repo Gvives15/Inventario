@@ -1,5 +1,6 @@
 from django.db.models import F
 from inventory.src.infrastructure.orm.models import Product, StockMovement
+from inventory.src.domain.movement_types import MovementTypes
 
 
 def execute(limit_low_stock: int = 10, limit_adjustments: int = 10):
@@ -20,7 +21,7 @@ def execute(limit_low_stock: int = 10, limit_adjustments: int = 10):
     ]
 
     recent_adjustments_qs = (
-        StockMovement.objects.filter(movement_type=StockMovement.TYPE_ADJUST)
+        StockMovement.objects.filter(movement_type__in=[MovementTypes.ADJUST_COUNT, MovementTypes.ADJUST_DELTA])
         .select_related("product", "created_by")
         .order_by("-created_at", "-id")[:limit_adjustments]
     )

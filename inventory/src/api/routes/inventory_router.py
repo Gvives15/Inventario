@@ -37,7 +37,7 @@ def list_products_ep(request, search: str | None = None, category: str | None = 
             sku=p.sku,
             category=p.category,
             stock_current=p.stock_current,
-            low_stock_threshold=p.low_stock_threshold,
+            stock_minimum=p.stock_minimum,
             is_active=p.is_active,
         )
         for p in qs
@@ -155,7 +155,7 @@ def list_low_stock_ep(request):
             sku=p.sku,
             category=p.category,
             stock_current=p.stock_current,
-            low_stock_threshold=p.low_stock_threshold,
+            stock_minimum=p.stock_minimum,
             is_active=p.is_active,
         )
         for p in qs

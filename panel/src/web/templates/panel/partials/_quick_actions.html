@@ -1,34 +1,66 @@
-<h3 style="margin:0 0 10px 0;">Acciones rápidas</h3>
+<h3 class="h2" style="margin:0 0 10px 0;">Acciones rápidas</h3>
 <div class="grid grid-3">
   <div class="card">
     <div class="muted">Entrada</div>
-    <form hx-post="{% url 'panel:stock_entry_submit' %}" hx-target="#qa-msg" hx-swap="innerHTML">
+    <form hx-post="{% url 'panel:stock_entry_submit' %}" hx-target="#toast-area" hx-swap="innerHTML">
       {% csrf_token %}
-      <input name="product_id" placeholder="ID" required />
-      <input name="quantity" type="number" min="1" placeholder="Cantidad" required />
-      <input name="reason" placeholder="Motivo" />
-      <button type="submit">Registrar</button>
+      <input class="input" name="product_id" placeholder="ID" required />
+      <input class="input" name="quantity" type="number" min="1" placeholder="Cantidad" required />
+      <input class="input" name="reason" placeholder="Motivo (obligatorio)" required />
+      <button type="submit" class="btn btn-primary">Registrar</button>
     </form>
   </div>
   <div class="card">
     <div class="muted">Salida</div>
-    <form hx-post="{% url 'panel:stock_exit_submit' %}" hx-target="#qa-msg" hx-swap="innerHTML">
+    <form hx-post="{% url 'panel:stock_exit_submit' %}" hx-target="#toast-area" hx-swap="innerHTML">
       {% csrf_token %}
-      <input name="product_id" placeholder="ID" required />
-      <input name="quantity" type="number" min="1" placeholder="Cantidad" required />
-      <input name="reason" placeholder="Motivo" />
-      <button type="submit">Registrar</button>
+      <input class="input" name="product_id" placeholder="ID" required />
+      <input class="input" name="quantity" type="number" min="1" placeholder="Cantidad" required />
+      <input class="input" name="reason" placeholder="Motivo (obligatorio)" required />
+      <button type="submit" class="btn btn-primary">Registrar</button>
     </form>
   </div>
   <div class="card">
     <div class="muted">Ajuste a conteo</div>
-    <form hx-post="{% url 'panel:stock_adjust_to_count_submit' %}" hx-target="#qa-msg" hx-swap="innerHTML">
+    <form hx-post="{% url 'panel:stock_adjust_to_count_submit' %}" hx-target="#toast-area" hx-swap="innerHTML">
       {% csrf_token %}
-      <input name="product_id" placeholder="ID" required />
-      <input name="counted_stock" type="number" min="0" placeholder="Conteo" required />
-      <input name="reason" placeholder="Motivo" required />
-      <button type="submit">Aplicar</button>
+      <input class="input" name="product_id" placeholder="ID" required />
+      <input class="input" name="counted_stock" type="number" min="0" placeholder="Conteo" required />
+      <input class="input" name="reason" placeholder="Motivo (obligatorio)" required />
+      <button type="submit" class="btn btn-primary">Aplicar</button>
     </form>
   </div>
 </div>
-<div id="qa-msg" style="margin-top:10px"></div>
+<div class="grid grid-3" style="margin-top:10px">
+  <div class="card">
+    <div class="muted">Entrada por SKU</div>
+    <form hx-post="{% url 'panel:stock_entry_by_sku_submit' %}" hx-target="#toast-area" hx-swap="innerHTML">
+      {% csrf_token %}
+      <input class="input" name="sku" placeholder="SKU" required />
+      <input class="input" name="quantity" type="number" min="1" placeholder="Cantidad" required />
+      <input class="input" name="reason" placeholder="Motivo (obligatorio)" required />
+      <button type="submit" class="btn btn-primary">Registrar</button>
+    </form>
+  </div>
+  <div class="card">
+    <div class="muted">Salida por SKU</div>
+    <form hx-post="{% url 'panel:stock_exit_by_sku_submit' %}" hx-target="#toast-area" hx-swap="innerHTML">
+      {% csrf_token %}
+      <input class="input" name="sku" placeholder="SKU" required />
+      <input class="input" name="quantity" type="number" min="1" placeholder="Cantidad" required />
+      <input class="input" name="reason" placeholder="Motivo (obligatorio)" required />
+      <button type="submit" class="btn btn-primary">Registrar</button>
+    </form>
+  </div>
+  <div class="card">
+    <div class="muted">Ajuste a conteo por SKU</div>
+    <form hx-post="{% url 'panel:stock_adjust_to_count_by_sku_submit' %}" hx-target="#toast-area" hx-swap="innerHTML">
+      {% csrf_token %}
+      <input class="input" name="sku" placeholder="SKU" required />
+      <input class="input" name="counted_stock" type="number" min="0" placeholder="Conteo" required />
+      <input class="input" name="reason" placeholder="Motivo (obligatorio)" required />
+      <button type="submit" class="btn btn-primary">Aplicar</button>
+    </form>
+  </div>
+</div>
+<!-- toast-area en base.html -->

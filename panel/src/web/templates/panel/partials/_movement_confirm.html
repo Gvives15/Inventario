@@ -1,0 +1,17 @@
+<div class="modal-overlay">
+  <div class="modal-content">
+    <div class="h2" style="margin-bottom:12px">Confirmar movimiento</div>
+    <div class="muted" style="margin-bottom:16px">Revisá tipo, cantidad, producto y almacén.</div>
+    <div class="row" style="justify-content:flex-end">
+      <button class="btn btn-secondary" onclick="document.getElementById('movement-drawer').innerHTML=''">Cancelar</button>
+      <form hx-post="{% if type == 'entry' %}{% url 'panel:stock_entry_submit' %}{% elif type == 'exit' %}{% url 'panel:stock_exit_submit' %}{% else %}{% url 'panel:stock_adjust_to_count_submit' %}{% endif %}" hx-target="#toast-stack" hx-swap="innerHTML">
+        {% csrf_token %}
+        <input type="hidden" name="product_id" value="{{ product_id }}" />
+        <input type="hidden" name="quantity" value="{{ quantity }}" />
+        <input type="hidden" name="counted_stock" value="{{ counted_stock }}" />
+        <input type="hidden" name="reason" value="{{ reason }}" />
+        <button class="btn btn-primary">Confirmar</button>
+      </form>
+    </div>
+  </div>
+</div>

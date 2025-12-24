@@ -79,3 +79,29 @@ class StockRuleTests(TestCase):
         self.assertIsNotNone(mv)
         self.assertIsNotNone(mv.created_by)
         self.assertEqual(mv.created_by_id, self.user.id)
+
+    def test_entry_requires_reason(self):
+        pid = self._create_product()
+        r = self.client.post(
+            "/api/inventory/stock/entry",
+            data=json.dumps({"product_id": pid, "quantity": 2, "reason": ""}),
+            content_type="application/json",
+            **self.auth,
+        )
+        self.assertEqual(r.status_code, 400)
+
+    def test_exit_requires_reason(self):
+        pid = self._create_product()
+        r = self.client.post(
+            "/api/inventory/stock/exit",
+            data=json.dumps({"product_id": pid, "quantity": 1, "reason": ""}),
+            content_type="application/json",
+            **self.auth,
+        )
+        self.assertEqual(r.status_code, 400)
+
+    def test_movement_type_choices_enforced_in_repo(self):
+        p = Product.objects.create(name="A", sku="SKUX", category="", stock_minimum=0)
+        from inventory.src.infrastructure.orm.stock_movement_repo import create as create_mv
+        with self.assertRaises(ValueError):
+            create_mv(p, 1, "bad", "test", 1, user=self.user)

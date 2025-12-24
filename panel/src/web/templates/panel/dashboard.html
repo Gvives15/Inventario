@@ -1,7 +1,7 @@
 {% extends "panel/base.html" %}
 {% block title %}Dashboard{% endblock %}
 {% block content %}
-  <h1 style="margin-top:0">Dashboard</h1>
+  <div class="h1" style="margin-top:0">Dashboard</div>
 
   <div hx-get="{% url 'panel:summary_partial' %}" hx-trigger="load" hx-swap="outerHTML" class="card"></div>
 
@@ -13,8 +13,8 @@
   <div class="grid grid-2" style="margin-top:12px">
     <div hx-get="{% url 'panel:top_products_partial' %}" hx-trigger="load" hx-swap="outerHTML" class="card"></div>
     <div class="card">
-      <h3 style="margin:0 0 10px 0;">Buscar</h3>
-      <input id="search" name="q" placeholder="SKU o nombre" hx-get="{% url 'panel:search_results_partial' %}"
+      <h3 class="h2" style="margin:0 0 10px 0;">Buscar</h3>
+      <input class="input" id="search" name="q" placeholder="SKU o nombre" hx-get="{% url 'panel:search_results_partial' %}"
              hx-trigger="keyup changed delay:300ms"
              hx-target="#search-results" hx-swap="innerHTML" />
       <div id="search-results" class="muted" style="margin-top:10px"></div>

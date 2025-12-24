@@ -1,0 +1,37 @@
+<div class="modal-overlay">
+  <div class="modal-content">
+    <div class="h2" style="margin-bottom:16px">Movimiento</div>
+    <form id="movement-form" class="grid" hx-get="{% url 'panel:movement_confirm_partial' %}" hx-target="#movement-drawer" hx-swap="innerHTML">
+      <select class="select" name="type">
+        <option value="entry">Entrada</option>
+        <option value="exit">Salida</option>
+        <option value="adjust_count">Ajuste a conteo</option>
+      </select>
+      <input class="input" name="product_id" placeholder="Producto ID" value="{{ product_id }}" readonly style="background:#f0f4fa;color:#666" />
+      <input class="input" name="quantity" type="number" min="1" placeholder="Cantidad" />
+      <input class="input" name="counted_stock" type="number" min="0" placeholder="Conteo (solo ajuste)" />
+      <input class="input" name="reason" placeholder="Motivo (obligatorio en salida/ajuste)" />
+      <div class="row" style="margin-top:12px;justify-content:flex-end">
+        <button class="btn btn-secondary" onclick="document.getElementById('movement-drawer').innerHTML='';return false;">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Siguiente</button>
+      </div>
+    </form>
+    <script>
+    (function(){
+      var form = document.getElementById('movement-form');
+      var type = form.querySelector('[name=type]');
+      var quantity = form.querySelector('[name=quantity]');
+      var counted = form.querySelector('[name=counted_stock]');
+      var reason = form.querySelector('[name=reason]');
+      function apply(){
+        var t = type.value;
+        quantity.required = (t !== 'adjust_count');
+        counted.required = (t === 'adjust_count');
+        reason.required = (t !== 'entry');
+      }
+      type.addEventListener('change', apply);
+      apply();
+    })();
+    </script>
+  </div>
+</div>

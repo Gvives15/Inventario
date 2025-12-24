@@ -95,3 +95,26 @@ DoD
 
 Resultado
 Panel V1 operativo para control diario con el mínimo indispensable.
+
+---
+
+## INV-004 — Quick Actions por SKU — HECHO
+Endpoints panel, vistas y partials para operar por SKU sin navegar.
+- Rutas: `entry-by-sku`, `exit-by-sku`, `adjust-to-count-by-sku`
+- UI: forms HTMX que rinden `_toast.html`
+
+## INV-005 — Integridad — HECHO
+Aplicada normalización global y razones obligatorias; choices en DB.
+- `normalize_sku` en dominio y usado en API/panel/imports
+- `require_reason` en entry/exit/adjust
+- `movement_type` con choices `entry|exit|adjust_count|adjust_delta` y constraint
+
+## INV-006 — Movimientos globales — HECHO
+Pantalla y parciales con filtros HTMX (hoy/7d, sku, tipo).
+- Query `application/queries/movements_q.py`
+- Página `panel/movements.html` y parcial `_movements_list.html`
+
+## INV-007 — UI errores + LOGGING — HECHO
+Templates 403/404/500 y logging operativo.
+- `LOGGING` en settings y hooks en commands
+- `_toast.html` para errores consistentes en panel
