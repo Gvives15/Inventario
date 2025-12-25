@@ -1,0 +1,44 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+
+# Virtual Envs
+venv/
+.venv/
+env/
+
+# Environment files
+.env
+.env.*
+
+# Django
+*.log
+media/
+staticfiles/
+
+# Testing & coverage
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.tox/
+.coverage
+coverage.xml
+htmlcov/
+
+# Build artifacts
+dist/
+build/
+
+# Node
+node_modules/
+
+# IDEs & OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Trae IDE
+.trae/
