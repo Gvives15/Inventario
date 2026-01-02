@@ -1,5 +1,6 @@
 from pathlib import Path
 import os
+import sys
 import dj_database_url
 
 def _env(*names):
@@ -10,6 +11,9 @@ def _env(*names):
     return None
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
+
+sys.path.append(str(BASE_DIR / 'core' / 'src'))
+sys.path.append(str(BASE_DIR / 'core' / 'src' / 'api'))
 
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY') or 'dev-unsafe-default'
 DEBUG = os.getenv('DEBUG', 'True') == 'True'
@@ -27,6 +31,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'inventory',
     'panel',
+    'contact.apps.ContactConfig',
 ]
 
 MIDDLEWARE = [
@@ -105,30 +110,4 @@ USE_I18N = True
 USE_TZ = True
 
 STATIC_URL = 'static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-LOGIN_URL = "/panel/login/"
-LOGIN_REDIRECT_URL = "/panel/"
-LOGOUT_REDIRECT_URL = "/panel/login/"
-
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-        },
-    },
-    'loggers': {
-        'django': {
-            'handlers': ['console'],
-            'level': 'INFO',
-        },
-        'inventory.movements': {
-            'handlers': ['console'],
-            'level': 'INFO',
-        },
-    },
-}
