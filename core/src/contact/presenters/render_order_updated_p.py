@@ -1,5 +1,6 @@
 def render(summary: dict) -> str:
-    lines = [f"Propuesta #{summary.get('order_id')}"]
+    lines = [f"Listo. Pedido actualizado (#{summary.get('order_id')})."]
+    lines.append("Resumen:")
     for item in summary.get("items", []):
         ref = item.get("product_ref", "")
         name = item.get("product_name", "")

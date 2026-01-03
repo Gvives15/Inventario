@@ -1,5 +1,5 @@
 from contact.shared.infrastructure.uow import UnitOfWork
-from contact.modules.orders.application.templates.kiosk_template import get_kiosk_template
+from contact.modules.orders.application.template_providers.kiosk_base_provider import get_items as get_kiosk_items
 from contact.modules.conversations.domain.conversation_stage import ConversationStage
 from contact.shared.domain.errors import ContactNotFound, MissingMinData
 
@@ -23,7 +23,7 @@ def execute(whatsapp_id: str) -> int:
             if last.status == "PROPOSED":
                 return last.id
 
-        items = get_kiosk_template()
+        items = get_kiosk_items()
         order = uow.orders.create_proposed(c.id, items)
         uow.conversations.set_stage_and_last_order(c.id, ConversationStage.E2_PROPOSAL, order.id)
         return order.id

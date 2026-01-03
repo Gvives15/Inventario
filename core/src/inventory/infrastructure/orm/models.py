@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.utils import timezone
 
 User = get_user_model()
 
@@ -53,4 +54,31 @@ class StockMovement(models.Model):
                 ]),
                 name="movement_type_valid_choices",
             ),
+        ]
+
+class ProductListModel(models.Model):
+    code = models.CharField(max_length=64, unique=True)
+    name = models.CharField(max_length=255)
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.code} - {self.name}"
+
+    class Meta:
+        ordering = ["code"]
+
+class ProductListItemModel(models.Model):
+    product_list = models.ForeignKey(ProductListModel, on_delete=models.CASCADE, related_name="items")
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="list_items")
+    default_qty = models.IntegerField()
+    sort_order = models.IntegerField(default=0)
+    created_at = models.DateTimeField(default=timezone.now)
+
+    class Meta:
+        ordering = ["sort_order", "id"]
+        constraints = [
+            models.UniqueConstraint(fields=["product_list", "product"], name="uniq_product_in_list"),
+            models.CheckConstraint(check=models.Q(default_qty__gt=0), name="check_default_qty_gt_0"),
         ]
