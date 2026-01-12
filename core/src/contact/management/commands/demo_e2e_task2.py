@@ -28,9 +28,8 @@ class Command(BaseCommand):
                 OrderModel.objects.filter(contact=c).delete()
                 ConversationStateModel.objects.filter(contact=c).delete()
                 c.name = ""
-                c.zone = ""
                 c.business_type = ""
-                c.save(update_fields=["name", "zone", "business_type", "updated_at"])
+                c.save(update_fields=["name", "business_type", "updated_at"])
             self.stdout.write(self.style.WARNING(f"reset aplicado para {wh}"))
 
         call_command("seed_kiosk_base_list", code=code, limit=limit)

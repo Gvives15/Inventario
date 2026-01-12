@@ -1,11 +1,5 @@
 from django.contrib import admin
-from inventory.infrastructure.orm.models import Product, StockMovement, Contact
-
-@admin.register(Contact)
-class ContactAdmin(admin.ModelAdmin):
-    list_display = ("name", "type", "is_active")
-    list_filter = ("type", "is_active")
-    search_fields = ("name",)
+from inventory.infrastructure.orm.models import Product, StockMovement
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):

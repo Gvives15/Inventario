@@ -16,16 +16,14 @@ def upsert_minimal(whatsapp_id: str, name: str, zone: str, business_type: str) -
         obj = Contact.objects.create(
             whatsapp_id=whatsapp_id,
             name=name,
-            zone=zone,
             business_type=business_type,
             type=Contact.TYPE_CLIENT,
             is_active=True,
         )
     else:
         obj.name = name
-        obj.zone = zone
         obj.business_type = business_type
-        obj.save(update_fields=["name", "zone", "business_type", "updated_at"])
+        obj.save(update_fields=["name", "business_type", "updated_at"])
 
     # ensure ConversationState exists at E1_MIN_DATA
     if not ConversationStateModel.objects.filter(contact_id=obj.id).exists():

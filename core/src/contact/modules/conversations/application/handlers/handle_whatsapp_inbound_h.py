@@ -11,6 +11,8 @@ from contact.modules.orders.application.commands.apply_order_patch_cmd import ex
 from contact.modules.orders.application.commands.confirm_order_cmd import execute as confirm_order
 from contact.presenters.render_order_updated_p import render as render_updated
 from contact.presenters.render_order_confirmed_p import render as render_confirmed
+from contact.modules.contacts.application.queries.has_min_profile_q import has_min_profile_q
+from contact.modules.contacts.application.queries.get_contact_facts_q import get_contact_facts_q
 
 
 def execute(dto: dict) -> str:
@@ -29,8 +31,38 @@ def execute(dto: dict) -> str:
             uow.conversations.set_stage_and_last_order(c.id, ConversationStage.E1_MIN_DATA, None)
             st = uow.conversations.get_by_contact_id(c.id)
 
-        # Stage-based routing
+        # Resolver de stage determinista con precedencia y persistencia solo en transición
         current_stage = st.stage if isinstance(st.stage, str) else st.stage.value
+        summary = None
+        if st.last_order_id:
+            summary = order_summary(st.last_order_id)
+        has_profile = has_min_profile_q(c.id)
+
+        # E4 si último order confirmado y vigente
+        if summary and summary.get("status") == "CONFIRMED" and current_stage != ConversationStage.E4_CONFIRMED.value:
+            uow.conversations.set_stage_and_last_order(c.id, ConversationStage.E4_CONFIRMED, st.last_order_id)
+            st = uow.conversations.get_by_contact_id(c.id)
+            current_stage = ConversationStage.E4_CONFIRMED.value
+
+        # Si tiene perfil mínimo y no hay propuesta activa, crear y transicionar a E2
+        if has_profile:
+            if not c.name or not c.business_type:
+                facts = get_contact_facts_q(c.id)
+                c.name = c.name or facts.get("name", "") or ""
+                c.business_type = c.business_type or facts.get("business_type", "") or ""
+                c.save(update_fields=["name", "business_type", "updated_at"])
+            need_proposal = (
+                current_stage == ConversationStage.E1_MIN_DATA.value
+                and (not summary or summary.get("status") != "PROPOSED")
+            )
+            if need_proposal:
+                oid = create_order(whatsapp_id)
+                uow.conversations.set_stage_and_last_order(c.id, ConversationStage.E2_PROPOSAL, oid)
+                st = uow.conversations.get_by_contact_id(c.id)
+                summary = order_summary(oid)
+                current_stage = ConversationStage.E2_PROPOSAL.value
+
+        # Stage-based routing
         if current_stage == ConversationStage.E2_PROPOSAL.value and st.last_order_id:
             action = parse_e2(dto.get("text", ""))
             if action["action"] == "SHOW":
@@ -38,6 +70,7 @@ def execute(dto: dict) -> str:
                 return render_proposal(summary)
             if action["action"] == "CONFIRM":
                 oid = confirm_order(whatsapp_id)
+                uow.conversations.set_stage_and_last_order(c.id, ConversationStage.E4_CONFIRMED, oid)
                 summary = order_summary(oid)
                 return render_confirmed(summary)
             if action["action"] in ("ADD", "REMOVE", "SET_QTY"):
@@ -84,8 +117,6 @@ def execute(dto: dict) -> str:
             missing = []
             if not c.name:
                 missing.append("Nombre")
-            if not c.zone:
-                missing.append("Zona")
             if not c.business_type:
                 missing.append("Tipo")
             if missing:

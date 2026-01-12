@@ -1,4 +1,4 @@
-from typing import Sequence
+from typing import Sequence, List
 from contact.models import OrderModel, OrderItemModel
 
 
@@ -18,3 +18,5 @@ def create_proposed(contact_id: int, items: Sequence[dict]) -> OrderModel:
 def get(order_id: int) -> OrderModel:
     return OrderModel.objects.prefetch_related("items").get(id=order_id)
 
+def get_confirmed_by_contact(contact_id: int) -> List[OrderModel]:
+    return list(OrderModel.objects.filter(contact_id=contact_id, status="CONFIRMED").order_by("-created_at"))

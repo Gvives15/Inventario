@@ -1,0 +1,22 @@
+artifacts:
+  - id: SOP-001
+    type: sop
+    owner: ops/orders
+    risk: ROJO
+    version: v1
+    status: active
+    path: ops/orders/sop/SOP-001_ops-queue_v1.md
+  - id: TPL-001
+    type: template
+    owner: ops/orders
+    risk: AMARILLO
+    version: v1
+    status: active
+    path: ops/orders/templates/TPL-001_review-reason_v1.md
+  - id: TPL-003
+    type: template
+    owner: ops/orders
+    risk: VERDE
+    version: v1
+    status: active
+    path: ops/orders/templates/TPL-003_daily-close_v1.md
